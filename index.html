@@ -22,58 +22,132 @@
             color: #fff;
         }
         
-        /* 核心高亮色：绿色 */
+        /* 核心高亮色 */
         .reveal .text-green {
             color: var(--brand-green);
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(0, 255, 85, 0.3); /* 增加一点发光效果 */
+            text-shadow: 0 0 10px rgba(0, 255, 85, 0.3);
         }
-        
-        /* 辅助高亮：金色（用于奖项） */
-        .reveal .text-gold {
-            color: #ffd700;
-            font-weight: bold;
-        }
+        .reveal .text-gold { color: #ffd700; font-weight: bold; }
+        .reveal .text-alert { color: #ff4d4d; font-weight: bold; }
 
-        /* 警示色：仍然保留红色用于报错，但稍微暗一点，不抢绿色风头 */
-        .reveal .text-alert {
-            color: #ff4d4d;
-            font-weight: bold;
-        }
-
+        /* 布局容器 */
         .container {
             display: flex;
             justify-content: space-around;
-            align-items: flex-start;
+            align-items: stretch; /* 让高度拉伸对齐 */
         }
         .col {
             flex: 1;
             margin: 0 10px;
             padding: 20px;
-            background: rgba(255,255,255,0.08); /* 稍微亮一点的背景块 */
-            border: 1px solid rgba(0, 255, 85, 0.2); /* 淡淡的绿色边框 */
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(0, 255, 85, 0.2);
             border-radius: 10px;
         }
         
-        /* 绿色渐变图表条 */
+        /* 图表条 */
         .chart-bar {
             background: linear-gradient(to right, #111, var(--brand-green));
             height: 40px;
-            margin: 10px 0;
+            margin: 10px 0; 
             line-height: 40px;
-            color: #000; /* 条里面的字变成黑色，对比度更高 */
+            color: #000;
             font-weight: bold;
             text-align: right;
             padding-right: 15px;
             font-size: 20px;
             border-radius: 5px;
             box-shadow: 0 0 15px rgba(0, 255, 85, 0.2);
+            transition: width 1s ease;
         }
-        
-        /* 列表项的子弹头颜色 */
-        .reveal ul li::marker {
+
+        /* --- 新增图形化样式 --- */
+
+        /* 1. 流程图节点 (用于售后痛点) */
+        .flow-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .flow-box {
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-size: 0.7em;
+            font-weight: bold;
+            color: #fff;
+            position: relative;
+        }
+        .flow-arrow {
+            font-size: 1.5em;
+            margin: 0 10px;
+            color: #666;
+        }
+        /* 红色路径 */
+        .path-bad .flow-box { background: rgba(255, 77, 77, 0.2); border: 1px solid #ff4d4d; }
+        .path-bad .flow-arrow { color: #ff4d4d; }
+        /* 绿色路径 */
+        .path-good .flow-box { background: rgba(0, 255, 85, 0.2); border: 1px solid #00ff55; }
+        .path-good .flow-arrow { color: #00ff55; }
+
+        /* 2. 漏斗连接线 (用于线上执行) */
+        .connector-line {
+            width: 4px;
+            height: 40px;
+            background: #555;
+            margin: 0 auto;
+        }
+        .connector-broken {
+            width: 4px;
+            height: 40px;
+            background: repeating-linear-gradient(
+                0deg,
+                #ff4d4d,
+                #ff4d4d 5px,
+                transparent 5px,
+                transparent 10px
+            );
+            margin: 0 auto;
+        }
+
+        /* 3. 金字塔 (用于KOC) */
+        .pyramid-level {
+            width: 60%;
+            margin: 5px auto;
+            padding: 10px;
+            color: #000;
+            font-weight: bold;
+            clip-path: polygon(5% 0%, 95% 0%, 100% 100%, 0% 100%);
+        }
+
+        /* 4. 转化引擎 (用于编外销售页) */
+        .engine-step {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: #222;
+            border: 2px solid #555;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+        .engine-arrow {
+            font-size: 2em;
             color: var(--brand-green);
+            margin: 0 20px;
+            animation: pulse 2s infinite;
         }
+        @keyframes pulse {
+            0% { opacity: 0.5; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.5; transform: scale(1); }
+        }
+
+        .reveal ul li::marker { color: var(--brand-green); }
     </style>
 </head>
 <body>
@@ -82,22 +156,33 @@
     <div class="slides">
 
         <section>
-            <h1 style="font-size: 2.5em; text-shadow: 0 0 20px #00ff55;">2025年度复盘</h1>
+            <h1 style="font-size: 2.0em; text-shadow: 0 0 20px #00ff55;">2025年度复盘</h1>
             <h3 class="text-green">聚力 · 破局 · 共赢</h3>
             <div style="width: 100px; height: 5px; background: #00ff55; margin: 30px auto;"></div>
             <p style="margin-top: 30px; color: #ccc;">黑骑士 · 长沙运营服务商</p>
-            <p style="font-size: 0.6em; opacity: 0.7;">面向全体合作伙伴</p>
         </section>
 
         <section>
             <h2 class="text-green">会议议程</h2>
             <hr style="border-color: #333;">
-            <ol style="font-size: 1.2em; line-height: 1.6;">
-                <li><span class="text-green">亮点回顾：</span>数据与标杆</li>
-                <li><span class="text-alert">正视不足：</span>店务与执行</li>
-                <li><span class="text-green">行动指南：</span>KOC与新打法</li>
-                <li><span class="text-gold">荣誉时刻：</span>颁奖仪式</li>
-            </ol>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 30px;">
+                <div style="width: 40%; border:1px solid #333; padding:15px; border-radius:10px;">
+                    <span style="font-size:2em;">📊</span><br>
+                    <span class="text-green">亮点回顾</span>
+                </div>
+                <div style="width: 40%; border:1px solid #333; padding:15px; border-radius:10px;">
+                    <span style="font-size:2em;">⚠️</span><br>
+                    <span class="text-alert">正视不足</span>
+                </div>
+                <div style="width: 40%; border:1px solid #333; padding:15px; border-radius:10px;">
+                    <span style="font-size:2em;">🚀</span><br>
+                    <span class="text-green">行动指南</span>
+                </div>
+                <div style="width: 40%; border:1px solid #333; padding:15px; border-radius:10px;">
+                    <span style="font-size:2em;">🏆</span><br>
+                    <span class="text-gold">荣誉时刻</span>
+                </div>
+            </div>
         </section>
 
         <section>
@@ -109,37 +194,44 @@
             <section>
                 <h3>2025 前后数据对比</h3>
                 <div style="text-align: left; width: 85%; margin: 0 auto;">
-                    <p style="font-size: 0.8em;">2024年总销量：</p>
-                    <div class="chart-bar" style="width: 50%; background: linear-gradient(to right, #333, #555); color: #fff;">8,200 台</div>
-                    <p style="font-size: 0.8em;">2025年总销量：</p>
-                    <div class="chart-bar" style="width: 95%;">12,600 台 <span style="font-size:0.6em;">(+53.7%)</span></div>
+                    <p style="font-size: 0.8em; margin-bottom: 0;">2024年总销量：</p>
+                    <div class="chart-bar" style="width: 50%; background: linear-gradient(to right, #333, #666); color: #fff;">8,200 台</div>
+                    
+                    <p style="font-size: 0.8em; margin-bottom: 0;">2025年总销量：</p>
+                    <div class="chart-bar" style="width: 95%;">12,600 台</div>
+                    
+                    <div class="fragment" style="text-align: right; margin-top: -30px; margin-right: 5%;">
+                        <span style="background: #ff4d4d; color: #fff; padding: 5px 10px; border-radius: 5px; font-size: 0.6em; transform: rotate(-5deg); display: inline-block;">
+                            📈 逆势增长 +53.7%
+                        </span>
+                    </div>
                 </div>
                 
-
-                <div class="fragment">
+                <div class="fragment" style="margin-top: 30px;">
                     <p>长沙外卖车品牌 <span class="text-green" style="font-size: 1.5em;">NO.1</span></p>
                 </div>
             </section>
 
             <section>
-                <h3>优秀案例分享</h3>
+                <h3>优秀案例画像</h3>
                 <div class="container">
                     <div class="col">
+                        <div style="font-size: 3em; margin-bottom: 10px;">👑</div>
                         <h4 class="text-green">销量之王</h4>
-                        <p style="font-size: 0.7em;">芙蓉区某门店单月突破150台</p>
-                        <p style="font-size: 0.7em; color:#aaa;">"只要敢备货，用对方法，没有卖不掉"</p>
+                        <div style="height: 1px; background: #555; margin: 10px 0;"></div>
+                        <p style="font-size: 0.7em;">芙蓉区某店</p>
+                        <p style="font-size: 1.5em; font-weight: bold; margin: 0;">150台+</p>
+                        <p style="font-size: 0.5em; color:#aaa;">单月最高纪录</p>
                     </div>
                     <div class="col">
+                        <div style="font-size: 3em; margin-bottom: 10px;">🛠️</div>
                         <h4 class="text-green">服务标杆</h4>
-                        <p style="font-size: 0.7em;">售后满意度100%，零客诉</p>
-                        <p style="font-size: 0.7em; color:#aaa;">"骑手最信任的补给站"</p>
+                        <div style="height: 1px; background: #555; margin: 10px 0;"></div>
+                        <p style="font-size: 0.7em;">天心区某店</p>
+                        <p style="font-size: 1.5em; font-weight: bold; margin: 0;">0 客诉</p>
+                        <p style="font-size: 0.5em; color:#aaa;">售后满意度100%</p>
                     </div>
                 </div>
-                
-
-                <p class="fragment" style="border: 1px solid #ffd700; color: #ffd700; padding: 10px; display:inline-block; border-radius: 5px;">
-                    🏆 谁是这些成绩的创造者？稍后揭晓！
-                </p>
             </section>
         </section>
 
@@ -152,19 +244,20 @@
             <section>
                 <h3>店务管理：形象即销量</h3>
                 <div class="container">
-                    <div class="col fragment">
-                        <h4 class="text-alert">❌ 问题：卫生堪忧</h4>
-                        <ul style="font-size: 0.7em;">
-                            <li>维修区油污满地</li>
-                            <li>新车落灰，像旧车</li>
-                            <li>骑手无落脚休息处</li>
+                    <div class="col fragment" style="border-color: #ff4d4d;">
+                        <h4 class="text-alert" style="border-bottom: 1px solid #ff4d4d; padding-bottom: 10px;">❌ 脏乱差 = 劝退</h4>
+                        <div style="font-size: 3em; opacity: 0.5;">🏚️</div>
+                        <ul style="font-size: 0.6em; text-align: left;">
+                            <li>满地油污无处下脚</li>
+                            <li>新车落灰像二手车</li>
                         </ul>
                     </div>
-                    <div class="col fragment">
-                        <h4 class="text-green">✅ 要求：标准化</h4>
-                        <ul style="font-size: 0.7em;">
-                            <li><span class="text-green">每日一清</span>：保持门面亮堂</li>
-                            <li><span class="text-green">分区管理</span>：销售/维修区区隔</li>
+                    <div class="col fragment" style="border-color: var(--brand-green);">
+                        <h4 class="text-green" style="border-bottom: 1px solid var(--brand-green); padding-bottom: 10px;">✅ 标准化 = 留客</h4>
+                        <div style="font-size: 3em; opacity: 1;">✨</div>
+                        <ul style="font-size: 0.6em; text-align: left;">
+                            <li><span class="text-green">每日一清</span> 门面亮堂</li>
+                            <li><span class="text-green">分区管理</span> 销售/维修隔离</li>
                         </ul>
                     </div>
                 </div>
@@ -172,38 +265,54 @@
 
             <section>
                 <h3>售后痛点：备件速度</h3>
-                <p style="font-size: 0.8em; text-align: left;">
-                    外卖骑手最怕什么？
+                <p style="font-size: 0.7em;">骑手最怕车坏了没件修，耽误跑单！</p>
+                
+                <div class="fragment path-bad">
+                    <p style="font-size: 0.6em; text-align: left; margin-bottom: 5px; color:#ff4d4d;">现状（无库存）：</p>
+                    <div class="flow-container">
+                        <div class="flow-box">车坏 🏍️</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">无配件 🚫</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">等2天 ⏳</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box" style="border: 2px solid #ff4d4d;">客户流失 🤬</div>
+                    </div>
+                </div>
 
-                    <span class="text-alert">怕车坏了没件修，耽误跑单！</span>
-                </p>
-                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 20px;">
-                    <ul style="font-size: 0.8em;">
-                        <li class="fragment" style="margin-bottom: 10px;"><strong>现状：</strong> 常用件（灯控/中控/控制器）无库存，等货2天。</li>
-                        <li class="fragment" style="margin-bottom: 10px;"><strong>后果：</strong> 骑手去别家修 -> <span class="text-alert">客户流失</span>。</li>
-                        <li class="fragment text-green"><strong>要求：</strong> 常用易损件必须建立安全库存，做到“即到即修”。</li>
-                    </ul>
+                <div class="fragment path-good" style="margin-top: 30px;">
+                    <p style="font-size: 0.6em; text-align: left; margin-bottom: 5px; color:#00ff55;">要求（安全库存）：</p>
+                    <div class="flow-container">
+                        <div class="flow-box">车坏 🏍️</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">有配件 ✅</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box">立修好 ⚡</div>
+                        <div class="flow-arrow">→</div>
+                        <div class="flow-box" style="border: 2px solid #00ff55;">忠实粉丝 ❤️</div>
+                    </div>
                 </div>
             </section>
 
             <section>
-                <h3>线上执行力</h3>
-                <div style="background: #222; padding: 15px; border-radius: 10px; border-left: 5px solid var(--brand-green);">
-                    <h4 style="color: var(--brand-green); margin:0;">运营服务商侧</h4>
-                    <p style="font-size: 0.6em; margin: 5px 0;">负责：拍视频、做内容、投流买线索、派单</p>
+                <h3>线上执行力断层</h3>
+                
+                <div style="width: 60%; margin: 0 auto;">
+                    <div style="background: #333; padding: 15px; border-radius: 10px; border: 1px solid var(--brand-green);">
+                        <h4 style="color: var(--brand-green); margin:0; font-size: 1em;">运营端：大流量输入</h4>
+                        <p style="font-size: 0.5em; margin: 0;">拍视频 / 投流 / 派单</p>
+                    </div>
+                    
+                    <div class="connector-broken fragment"></div>
+                    <div class="fragment" style="position: absolute; left: 65%; top: 45%; color: #ff4d4d; font-size: 1.5em; font-weight: bold;">
+                        ⛔ 堵住了！
+                    </div>
+
+                    <div class="fragment" style="background: #222; padding: 15px; border-radius: 10px; border: 1px solid #ff4d4d; opacity: 0.7;">
+                        <h4 style="color: #ff4d4d; margin:0; font-size: 1em;">门店端：承接失败</h4>
+                        <p style="font-size: 0.5em; margin: 0;">不转发 / 回复慢 / 不配合</p>
+                    </div>
                 </div>
-                <div style="font-size: 2em; line-height: 0.8; color: #555;">⬇️</div>
-                <div style="background: #2a2a2a; padding: 15px; border-radius: 10px; border-left: 5px solid #ff4d4d;">
-                    <h4 style="color: #ff4d4d; margin:0;">门店侧（执行断层）</h4>
-                    <ul style="font-size: 0.6em; text-align: left; margin-top: 5px;">
-                        <li>朋友圈不转发 ❌</li>
-                        <li>线索回复慢 ❌</li>
-                        <li>不配合拍摄素材 ❌</li>
-                    </ul>
-                </div>
-                <p class="fragment text-green" style="margin-top:20px; font-size: 0.9em;">
-                    线上部门全力支持，门店必须接得住流量！
-                </p>
             </section>
         </section>
 
@@ -213,49 +322,99 @@
                 <p>KOC招募管理 & 行动计划</p>
             </section>
 
-            <section>
-                <h3>KOC招募管理</h3>
-                <p style="font-size: 0.7em;">谁是我们的KOC？<br><strong>骑手队长、站长、社牛骑手</strong></p>
-                <div class="container">
-                    <div class="col">
-                        <h4>过去</h4>
-                        <p style="font-size: 0.6em; opacity: 0.6;">只把骑手当客户<br>修完车就走</p>
+<section>
+                <h3>KOC金字塔模型</h3>
+                <p style="font-size: 0.6em;">把骑手变成我们的销售员</p>
+
+                <div style="margin-top: 30px;">
+                    <div class="fragment pyramid-level" data-fragment-index="3" style="width: 30%; background: #ffd700;">
+                        <span style="font-size: 0.8em;">合伙人</span>
+                        <br><span style="font-size: 0.5em; font-weight: normal;">(赚取佣金/深度绑定)</span>
                     </div>
-                    <div class="col" style="border-color: var(--brand-green); background: rgba(0, 255, 85, 0.1);">
-                        <h4 class="text-green">未来</h4>
-                        <p style="font-size: 0.6em;">把骑手变成<span class="text-green">合伙人</span><br>帮我们卖车</p>
+                    <div class="fragment pyramid-level" data-fragment-index="2" style="width: 55%; background: var(--brand-dark-green); color: #fff;">
+                        <span style="font-size: 0.8em;">KOC (人缘好/爱分享)</span>
+                        <br><span style="font-size: 0.5em; font-weight: normal;">(定期活动/带新奖励)</span>
+                    </div>
+                    <div class="fragment pyramid-level" data-fragment-index="1" style="width: 80%; background: #333; color: #fff; border: 1px solid #555;">
+                        <span style="font-size: 0.8em;">普通骑手用户</span>
+                        <br><span style="font-size: 0.5em; font-weight: normal;">(基础服务/修车)</span>
                     </div>
                 </div>
-                <ul class="fragment" style="font-size: 0.7em; margin-top: 30px;">
-                    <li>制定“老带新”合理返利政策</li>
-                    <li>定期举办“骑手活动”（骑行、聚会），维护KOC关系</li>
-                </ul>
             </section>
 
             <section>
-                <h3>总结与展望</h3>
-                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
-                    <div style="margin: 10px; padding: 10px; border: 1px solid #333; width: 40%;">
-                        <strong class="text-green">店务</strong><br><span style="font-size: 0.6em;">形象升级</span>
+                <h3>关键人变身“编外销售”</h3>
+                <p style="font-size: 0.6em; color: #aaa;">低成本 · 无底薪 · 高产出</p>
+                
+                <div style="display: flex; align-items: center; justify-content: center; margin-top: 40px; margin-bottom: 30px;">
+                    <div class="fragment engine-step fade-up">
+                        <span style="font-size: 2em;">🎯</span>
+                        <span style="font-size: 0.5em; margin-top:5px;">锁定人选</span>
+                        <span style="font-size: 0.4em; color:#aaa;">手握资源</span>
                     </div>
-                    <div style="margin: 10px; padding: 10px; border: 1px solid #333; width: 40%;">
-                        <strong class="text-green">售后</strong><br><span style="font-size: 0.6em;">唯快不破</span>
+                    
+                    <div class="fragment engine-arrow fade-up">➡</div>
+
+                    <div class="fragment engine-step fade-up" style="border-color: var(--brand-green);">
+                        <span style="font-size: 2em;">📲</span>
+                        <span style="font-size: 0.5em; margin-top:5px;">赋能工具</span>
+                        <span style="font-size: 0.4em; color:var(--brand-green);">海报/视频</span>
                     </div>
-                    <div style="margin: 10px; padding: 10px; border: 1px solid #333; width: 40%;">
-                        <strong class="text-green">线上</strong><br><span style="font-size: 0.6em;">流量必争</span>
-                    </div>
-                    <div style="margin: 10px; padding: 10px; border: 1px solid #333; width: 40%;">
-                        <strong class="text-green">KOC</strong><br><span style="font-size: 0.6em;">全员销售</span>
+
+                    <div class="fragment engine-arrow fade-up">➡</div>
+
+                    <div class="fragment engine-step fade-up" style="background: rgba(0,255,85,0.2); border-color: var(--brand-green); box-shadow: 0 0 20px var(--brand-green);">
+                        <span style="font-size: 2em;">💰</span>
+                        <span style="font-size: 0.5em; margin-top:5px;">成交分润</span>
+                        <span style="font-size: 0.4em; color:#fff;">坐等数钱</span>
                     </div>
                 </div>
-                <h2 style="margin-top: 40px;" class="text-green">2026<br>做长沙外卖车的绝对第一！</h2>
+
+                <div class="fragment fade-up" style="background: #222; border: 1px dashed var(--brand-green); padding: 15px; border-radius: 10px; width: 80%; margin: 0 auto;">
+                    <p style="font-size: 0.8em; margin: 0;">
+                        <span style="color: #aaa;">这笔账怎么算？</span><br>
+                        1个KOC ≈ 50名骑手 ≈ <span class="text-green">月销5台</span> ≈ <span class="text-gold">纯利增加 2000元+</span><br>
+                        <span class="text-green">如果有5个KOC</span> ≈ <span class="text-gold">纯利增加 ？？？元</span>
+    
+                    
+                    </p>
+                    <p style="font-size: 0.5em; color: #666; margin-top: 10px;">(无需底薪社保，仅需支付提成，风险为0)</p>
+                </div>
+            </section>
+
+            
+            <section>
+                <h3>四位一体 · 决胜2026</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; margin: 20px auto;">
+                    <div class="fragment" style="background: rgba(0,255,85,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2em;">🏪</div>
+                        <strong class="text-green">店务升级</strong>
+                        <p style="font-size: 0.5em; margin:5px 0;">形象标准化</p>
+                    </div>
+                    <div class="fragment" style="background: rgba(0,255,85,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2em;">⚡</div>
+                        <strong class="text-green">极速售后</strong>
+                        <p style="font-size: 0.5em; margin:5px 0;">备件库存化</p>
+                    </div>
+                    <div class="fragment" style="background: rgba(0,255,85,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2em;">📱</div>
+                        <strong class="text-green">流量必争</strong>
+                        <p style="font-size: 0.5em; margin:5px 0;">执行坚决化</p>
+                    </div>
+                    <div class="fragment" style="background: rgba(0,255,85,0.1); padding: 15px; border-radius: 10px;">
+                        <div style="font-size: 2em;">🤝</div>
+                        <strong class="text-green">KOC裂变</strong>
+                        <p style="font-size: 0.5em; margin:5px 0;">全员销售化</p>
+                    </div>
+                </div>
+                <h2 style="margin-top: 30px; font-size: 1.5em;" class="text-green">做长沙外卖车的绝对第一！</h2>
             </section>
         </section>
 
         <section>
             <h1>🏆 颁奖仪式</h1>
+            <div style="font-size: 4em; margin: 20px 0;">🎁</div>
             <p class="text-gold">有请获奖的优秀二网商家上台</p>
-            <p style="font-size: 0.6em; color: #888;">让我们用掌声感谢这一年的付出</p>
         </section>
 
     </div>
@@ -269,11 +428,78 @@
         progress: true,
         center: true,
         hash: true,
-        transition: 'convex', // 切换效果
+        transition: 'convex',
         backgroundTransition: 'zoom'
+    });
+
+    // --- 新增：ESC键概览模式下的拖动功能 ---
+    
+    // 状态变量
+    let isOverview = false;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+    let initialMarginLeft = 0;
+    let initialMarginTop = 0;
+
+    // 监听进入概览模式
+    Reveal.on('overviewshown', () => {
+        isOverview = true;
+        document.body.style.cursor = 'grab'; // 改变鼠标指针提示用户可抓取
+    });
+
+    // 监听退出概览模式
+    Reveal.on('overviewhidden', () => {
+        isOverview = false;
+        document.body.style.cursor = ''; // 恢复默认指针
+        // 退出时重置偏移，防止回到正常模式时幻灯片位置错乱
+        const slides = document.querySelector('.slides');
+        slides.style.marginLeft = '';
+        slides.style.marginTop = '';
+    });
+
+    // 鼠标按下：开始拖动
+    document.addEventListener('mousedown', (e) => {
+        // 只有在概览模式 且 按下的是左键(button 0) 才触发
+        if (!isOverview || e.button !== 0) return;
+
+        isDragging = true;
+        document.body.style.cursor = 'grabbing'; // 抓取中的指针样式
+        
+        startX = e.clientX;
+        startY = e.clientY;
+        
+        const slides = document.querySelector('.slides');
+        const style = window.getComputedStyle(slides);
+        
+        // 获取当前的 margin 值，如果是 auto 或空则默认为 0
+        initialMarginLeft = parseInt(style.marginLeft) || 0;
+        initialMarginTop = parseInt(style.marginTop) || 0;
+        
+        e.preventDefault(); // 防止选中文字
+    });
+
+    // 鼠标移动：执行拖动
+    document.addEventListener('mousemove', (e) => {
+        if (!isDragging || !isOverview) return;
+        
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        
+        const slides = document.querySelector('.slides');
+        // 使用 margin 进行位移，这样不会冲突 reveal.js 自身的 transform 缩放
+        slides.style.marginLeft = (initialMarginLeft + dx) + 'px';
+        slides.style.marginTop = (initialMarginTop + dy) + 'px';
+    });
+
+    // 鼠标松开：停止拖动
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            if (isOverview) document.body.style.cursor = 'grab';
+        }
     });
 </script>
 
 </body>
 </html>
-
