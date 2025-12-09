@@ -382,7 +382,6 @@
                 </div>
             </section>
 
-            
             <section>
                 <h3>四位一体 · 决胜2026</h3>
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 90%; margin: 20px auto;">
@@ -424,17 +423,21 @@
 <script>
     // 初始化Reveal
     Reveal.initialize({
-        controls: true,
+        controls: false, // 2按钮翻页笔不需要屏幕控件，建议关闭
         progress: true,
         center: true,
         hash: true,
+        
+        // 【关键设置】线性导航模式
+        // 这意味着按“下一页”按钮时，会强制按顺序播放（包括垂直子页面），
+        // 彻底解决2按钮翻页笔只能横向翻页、导致跳过垂直内容的问题。
+        navigationMode: 'linear', 
+        
         transition: 'convex',
         backgroundTransition: 'zoom'
     });
 
-    // --- 新增：ESC键概览模式下的拖动功能 ---
-    
-    // 状态变量
+    // --- ESC键概览模式下的拖动功能 ---
     let isOverview = false;
     let isDragging = false;
     let startX = 0;
@@ -442,57 +445,41 @@
     let initialMarginLeft = 0;
     let initialMarginTop = 0;
 
-    // 监听进入概览模式
     Reveal.on('overviewshown', () => {
         isOverview = true;
-        document.body.style.cursor = 'grab'; // 改变鼠标指针提示用户可抓取
+        document.body.style.cursor = 'grab';
     });
 
-    // 监听退出概览模式
     Reveal.on('overviewhidden', () => {
         isOverview = false;
-        document.body.style.cursor = ''; // 恢复默认指针
-        // 退出时重置偏移，防止回到正常模式时幻灯片位置错乱
+        document.body.style.cursor = '';
         const slides = document.querySelector('.slides');
         slides.style.marginLeft = '';
         slides.style.marginTop = '';
     });
 
-    // 鼠标按下：开始拖动
     document.addEventListener('mousedown', (e) => {
-        // 只有在概览模式 且 按下的是左键(button 0) 才触发
         if (!isOverview || e.button !== 0) return;
-
         isDragging = true;
-        document.body.style.cursor = 'grabbing'; // 抓取中的指针样式
-        
+        document.body.style.cursor = 'grabbing';
         startX = e.clientX;
         startY = e.clientY;
-        
         const slides = document.querySelector('.slides');
         const style = window.getComputedStyle(slides);
-        
-        // 获取当前的 margin 值，如果是 auto 或空则默认为 0
         initialMarginLeft = parseInt(style.marginLeft) || 0;
         initialMarginTop = parseInt(style.marginTop) || 0;
-        
-        e.preventDefault(); // 防止选中文字
+        e.preventDefault();
     });
 
-    // 鼠标移动：执行拖动
     document.addEventListener('mousemove', (e) => {
         if (!isDragging || !isOverview) return;
-        
         const dx = e.clientX - startX;
         const dy = e.clientY - startY;
-        
         const slides = document.querySelector('.slides');
-        // 使用 margin 进行位移，这样不会冲突 reveal.js 自身的 transform 缩放
         slides.style.marginLeft = (initialMarginLeft + dx) + 'px';
         slides.style.marginTop = (initialMarginTop + dy) + 'px';
     });
 
-    // 鼠标松开：停止拖动
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
