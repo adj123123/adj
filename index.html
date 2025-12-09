@@ -322,7 +322,7 @@
                 <p>KOC招募管理 & 行动计划</p>
             </section>
 
-<section>
+            <section>
                 <h3>KOC金字塔模型</h3>
                 <p style="font-size: 0.6em;">把骑手变成我们的销售员</p>
 
@@ -375,8 +375,6 @@
                         <span style="color: #aaa;">这笔账怎么算？</span><br>
                         1个KOC ≈ 50名骑手 ≈ <span class="text-green">月销5台</span> ≈ <span class="text-gold">纯利增加 2000元+</span><br>
                         <span class="text-green">如果有5个KOC</span> ≈ <span class="text-gold">纯利增加 ？？？元</span>
-    
-                    
                     </p>
                     <p style="font-size: 0.5em; color: #666; margin-top: 10px;">(无需底薪社保，仅需支付提成，风险为0)</p>
                 </div>
@@ -423,25 +421,30 @@
 <script>
     // 初始化Reveal
     Reveal.initialize({
-        controls: false, // 2按钮翻页笔不需要屏幕控件，建议关闭
+        controls: false, // 2按钮翻页笔不需要屏幕控件
         progress: true,
         center: true,
         hash: true,
         
-        // 【关键设置】线性导航模式
-        // 这意味着按“下一页”按钮时，会强制按顺序播放（包括垂直子页面），
-        // 彻底解决2按钮翻页笔只能横向翻页、导致跳过垂直内容的问题。
+        // 线性导航模式
         navigationMode: 'linear', 
         
         transition: 'convex',
         backgroundTransition: 'zoom'
     });
 
-    // --- ESC键概览模式下的拖动功能 ---
+    // --- 全局变量与逻辑 ---
     let isOverview = false;
     let isDragging = false;
-    let startX = 0;
-    let startY = 0;
+    
+    // 用于修复“ESC后点击跳转下一页”的Bug：添加一个冷却锁
+    let blockClick = false; 
+
+    // 记录点击时的初始坐标
+    let clickStartX = 0;
+    let clickStartY = 0;
+    
+    // 记录拖动时的初始margin
     let initialMarginLeft = 0;
     let initialMarginTop = 0;
 
@@ -456,35 +459,71 @@
         const slides = document.querySelector('.slides');
         slides.style.marginLeft = '';
         slides.style.marginTop = '';
+
+        // 【关键修复】：退出概览模式时，锁定点击事件500ms
+        // 这样可以防止退出概览时的那次点击被识别为“下一页”
+        blockClick = true;
+        setTimeout(() => {
+            blockClick = false;
+        }, 500);
     });
 
+    // 1. 鼠标按下
     document.addEventListener('mousedown', (e) => {
-        if (!isOverview || e.button !== 0) return;
-        isDragging = true;
-        document.body.style.cursor = 'grabbing';
-        startX = e.clientX;
-        startY = e.clientY;
-        const slides = document.querySelector('.slides');
-        const style = window.getComputedStyle(slides);
-        initialMarginLeft = parseInt(style.marginLeft) || 0;
-        initialMarginTop = parseInt(style.marginTop) || 0;
-        e.preventDefault();
+        clickStartX = e.clientX;
+        clickStartY = e.clientY;
+
+        if (isOverview && e.button === 0) {
+            isDragging = true;
+            document.body.style.cursor = 'grabbing';
+            const slides = document.querySelector('.slides');
+            const style = window.getComputedStyle(slides);
+            initialMarginLeft = parseInt(style.marginLeft) || 0;
+            initialMarginTop = parseInt(style.marginTop) || 0;
+            e.preventDefault(); 
+        }
     });
 
+    // 2. 鼠标移动
     document.addEventListener('mousemove', (e) => {
         if (!isDragging || !isOverview) return;
-        const dx = e.clientX - startX;
-        const dy = e.clientY - startY;
+        const dx = e.clientX - clickStartX;
+        const dy = e.clientY - clickStartY;
         const slides = document.querySelector('.slides');
         slides.style.marginLeft = (initialMarginLeft + dx) + 'px';
         slides.style.marginTop = (initialMarginTop + dy) + 'px';
     });
 
+    // 3. 鼠标松开
     document.addEventListener('mouseup', () => {
         if (isDragging) {
             isDragging = false;
             if (isOverview) document.body.style.cursor = 'grab';
         }
+    });
+
+    // 4. 鼠标单击（翻页逻辑）
+    document.addEventListener('click', (e) => {
+        // 校验1：冷却锁生效中（刚退出概览模式），不翻页
+        if (blockClick) return;
+
+        // 校验2：概览模式下，不翻页
+        if (isOverview) return;
+
+        // 校验3：点击的是链接/按钮等，不翻页
+        if (e.target.closest('a, button, input, select, textarea, video, audio')) return;
+
+        // 校验4：有文本被选中，不翻页
+        const selection = window.getSelection();
+        if (selection && selection.toString().trim().length > 0) return;
+
+        // 校验5：如果产生了明显的位移（>5px），视为拖动/选字，不翻页
+        const dx = Math.abs(e.clientX - clickStartX);
+        const dy = Math.abs(e.clientY - clickStartY);
+        if (dx > 5 || dy > 5) return;
+
+        // 执行下一页
+        Reveal.next();
     });
 </script>
 
