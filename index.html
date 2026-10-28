@@ -149,7 +149,59 @@
   .act .ds{font-size:13px;color:#46505e;margin-top:2px}
   .act .ow{font-size:12px;color:var(--sub);margin-top:4px}
   footer{text-align:center;color:var(--sub);font-size:12.5px;padding:30px;border-top:1px solid var(--line)}
-  @media(max-width:760px){.g2,.g3,.g4{grid-template-columns:1fr}.bar-row .lab{width:84px;font-size:11.5px}}
+  /* 表格横向滚动容器（手机不撑破布局） */
+  .tbl-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .tbl-scroll table{min-width:520px}
+  /* ===== 响应式：平板 ===== */
+  @media(max-width:760px){
+    .wrap{padding:22px 14px 70px}
+    .g2,.g3,.g4{grid-template-columns:1fr}
+    .bar-row .lab{width:84px;font-size:11.5px}
+    .sec-h h2{font-size:20px}
+    .hero{padding:40px 18px 34px}
+    .hero h1{font-size:26px}
+    .hero .sub{font-size:14px}
+    .hero .chip{font-size:12px;padding:5px 12px}
+    nav.toc{padding:8px 12px;gap:2px}
+    nav.toc a{padding:6px 11px;font-size:12px}
+  }
+  /* ===== 响应式：手机 ===== */
+  @media(max-width:480px){
+    body{font-size:14px}
+    .wrap{padding:18px 11px 60px}
+    .card{padding:14px 13px}
+    .card h3{font-size:15px}
+    .sec-h{gap:9px;margin-bottom:14px}
+    .sec-h .no{width:30px;height:30px;font-size:14px}
+    .sec-h h2{font-size:18px}
+    .sec-h .tag{display:none}
+    .hero{padding:32px 14px 28px}
+    .hero h1{font-size:22px;letter-spacing:0}
+    .hero .sub{font-size:13px;margin-top:8px}
+    .hero .meta{gap:7px;margin-top:16px}
+    .hero .chip{font-size:11px;padding:4px 10px}
+    /* 条形图：标签移到上方，避免窄屏挤压 */
+    .bar-row{flex-direction:column;align-items:stretch;gap:4px;margin:11px 0}
+    .bar-row .lab{width:auto;text-align:left;font-size:12px}
+    .bar-track{height:26px}
+    .bar-fill{font-size:11.5px;padding-right:8px;justify-content:flex-end}
+    /* 时间线收紧 */
+    .tl:before{left:17px}
+    .step{padding-left:44px;padding-bottom:18px}
+    .step .dot{left:4px;width:24px;height:24px;font-size:11px}
+    .step .t{font-size:13.5px}
+    .step .d{font-size:12.5px}
+    .att .nm{font-size:14px}
+    .att .rl{font-size:11.5px}
+    .avatar{width:40px;height:40px;font-size:14px}
+    .acc .hd{font-size:13.5px;padding:12px 13px}
+    .acc .bd{font-size:13px}
+    .act{padding:11px 12px}
+    .act .tt{font-size:13.5px}
+    .act .ds{font-size:12.5px}
+    .note{font-size:12px;padding:9px 11px}
+    footer{font-size:11.5px;padding:22px 14px}
+  }
 </style>
 </head>
 <body>
@@ -411,7 +463,7 @@
 
     <div class="card" style="margin-top:16px">
       <h3>🎟️ 代金券模型（4800 抵 5000）</h3>
-      <table>
+      <div class="tbl-scroll"><table>
         <thead><tr><th>项目</th><th>线下车价 6000（无补贴）</th><th>线下车价抬到 6200（补门店）</th></tr></thead>
         <tbody>
           <tr><td>用户线上支付</td><td class="em">4800</td><td class="em">4800</td></tr>
@@ -420,7 +472,7 @@
           <tr><td>券面 5000 扣 3%</td><td>4850</td><td>4850</td></tr>
           <tr><td><b>门店到手（券+线下）</b></td><td class="em">5850</td><td class="em">6050</td></tr>
         </tbody>
-      </table>
+      </table></div>
       <div class="note">代金券（小牛主推）：线上付 4800 抵 5000，促转化。抬高线下车价可把补贴转移到门店，门店到手从 5850 → 6050。</div>
     </div>
   </section>
@@ -487,14 +539,14 @@
 
     <div class="card" style="margin-bottom:16px">
       <h3>📐 官方新客户政策（黑骑士当前）</h3>
-      <table>
+      <div class="tbl-scroll"><table>
         <thead><tr><th>档位</th><th>收</th><th>返/补</th><th>说明</th></tr></thead>
         <tbody>
           <tr><td>不承诺上翻</td><td class="em">收 3 点</td><td>货补 1 点</td><td>相当于 2 点扣点（基础档）</td></tr>
           <tr><td>承诺销量（可谈）</td><td class="em">收 0.4</td><td>最高补到 2.6 点</td><td>官方新客户上限政策</td></tr>
           <tr><td>讲师私操作（待申请）</td><td>收 3 点</td><td>畅销品收三返三；其余收三返一/2.4</td><td>部分品零扣点促动销</td></tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
 
     <div class="grid g2" style="margin-bottom:16px">
